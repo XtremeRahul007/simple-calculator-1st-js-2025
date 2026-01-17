@@ -1,0 +1,147 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif
+}
+
+header {
+    background-color: #1c4966;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.5em;
+}
+
+main {
+    margin: 1rem;
+    background-color: aliceblue;
+    padding: 1rem;
+    border: #1c4966 2px solid;
+    border-radius: 8px;
+}
+
+main p {
+    font-size: 1.2em;
+}
+
+main h2 {
+    margin-top: 1rem;
+    text-align: center;
+    display: inline-block;
+    border-bottom: 4px solid #1c4966;
+    padding-bottom: 0.2rem;
+}
+
+#bodmasform {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.num-inp,
+.res-out {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: .5rem;
+}
+
+.num-inp label,
+.res-out label {
+    font-weight: bold;
+}
+
+.num-inp input,
+.res-out input {
+    padding: 0.5rem;
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+.num-inp input:focus {
+    border-color: #1c4966;
+    outline: none;
+    box-shadow: #1c4966 0 0 5px;
+}
+
+.num-inp button {
+    padding: .5rem .7rem;
+    background-color: #1c4966;
+    color: white;
+    border: 1px solid #1c4966;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.num-inp button:hover {
+    background-color: #163d55;
+}
+
+.num-inp button:active {
+    background-color: aliceblue;
+    color: #1c4966;
+    border: #1c4966 1px solid;
+}
+
+#opt-inp select {
+    padding: .5rem;
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+#opt-inp select:focus {
+    border-color: #1c4966;
+    outline: none;
+    box-shadow: #1c4966 0 0 5px;
+}
+
+#opt-inp {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+}
+
+#opt-inp label {
+    font-weight: bold;
+    margin-right: .5rem;
+    font-size: 1rem;
+}
+
+#opt-inp input {
+    transform: scale(1.2);
+    margin-right: .2rem;
+    cursor: pointer;
+    accent-color: #1c4966;
+}
+
+#cal {
+    padding: .5rem;
+    background-color: #1c4966;
+    color: white;
+    border: 1px solid #1c4966;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+#cal:hover {
+    background-color: #163d55;
+}
+
+#cal:active {
+    background-color: aliceblue;
+    color: #1c4966;
+    border: #1c4966 1px solid;
+}
+
+#result {
+    border: 1px solid #ccc;
+    outline: none;
+}

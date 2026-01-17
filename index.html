@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XtremeNexa</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <header>
+        <h1>Try And Error Ground.</h1>
+    </header>
+    <main>
+        <p>Welcome to the Try And Error Ground. This is a space for experimentation and learning through trial and
+            error.</p>
+
+        <h2>Two Numbers Summation</h2>
+        <form id="bodmasform">
+            <div class="num-inp">
+                <label for="num1">Enter First Number:</label>
+                <input type="number" id="num1" placeholder="0" required>
+                <button type="button" data-reset="num1">&#8634;</button>
+            </div>
+            <div class="num-inp">
+                <label for="num2">Enter Second Number:</label>
+                <input type="number" id="num2" placeholder="0" required>
+                <button type="button" data-reset="num2">&#8634;</button>
+            </div>
+            <div id="opt-inp">
+                <label for="operation">Select Operation:</label>
+                <label>
+                    <input type="radio" name="opt-name" value="add"> Addition
+                </label>
+                <label>
+                    <input type="radio" name="opt-name" value="sub"> Subtraction
+                </label>
+                <label>
+                    <input type="radio" name="opt-name" value="mul"> Multiplication
+                </label>
+                <label>
+                    <input type="radio" name="opt-name" value="div"> Division
+                </label>
+            </div>
+            <button id="cal" type="submit">Calculate</button>
+            <div class="res-out">
+                <label for="result">Result:</label>
+                <input type="text" id="result" readonly>
+            </div>
+        </form>
+    </main>
+</body>
+
+</html>
