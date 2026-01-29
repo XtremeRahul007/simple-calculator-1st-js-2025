@@ -31,10 +31,6 @@ main {
     border: #1c4966 2px solid;
     border-radius: 8px;
     flex: 1;
-    margin: 1rem auto;
-    max-width: 600px;  
-    width: 95%;        
-    overflow: hidden;
     padding-bottom: 5rem;
 }
 
@@ -168,16 +164,4 @@ footer {
     color: white;
     padding: 20px;
     text-align: center;
-}
-
-.input-group {
-    display: flex;
-    flex: 2;
-    gap: 0.5rem;
-    align-items: center;
-}
-
-.input-group input {
-    flex: 1;
-    min-width: 0;
 }
