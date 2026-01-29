@@ -15,22 +15,27 @@
     </header>
     <main>
         <p>
-A simple calculator that performs basic arithmetic operations such as addition, subtraction, multiplication, and division between two numbers.
-</p>
+            A simple calculator that performs basic arithmetic operations such as addition, subtraction, multiplication,
+            and division between two numbers.
+        </p>
 
         <h2>Two Numbers Summation</h2>
         <form id="bodmasform">
             <div class="num-inp">
                 <label for="num1">Enter First Number:</label>
-                <input type="number" id="num1" placeholder="0" required>
-                <button type="button" data-reset="num1">&#8634;</button>
+                <div class="input-group">
+                    <input type="number" id="num1" placeholder="0" required>
+                    <button type="button" data-reset="num1">&#8634;</button>
+                </div>
             </div>
             <div class="num-inp">
                 <label for="num2">Enter Second Number:</label>
-                <input type="number" id="num2" placeholder="0" required>
-                <button type="button" data-reset="num2">&#8634;</button>
+                <div class="input-group">
+                    <input type="number" id="num2" placeholder="0" required>
+                    <button type="button" data-reset="num2">&#8634;</button>
+                </div>
             </div>
-            <div id="opt-inp">
+            <div class="opt-inp" id="opt-inp">
                 <label for="operation">Select Operation:</label>
                 <label>
                     <input type="radio" name="opt-name" value="add"> Addition
@@ -45,13 +50,16 @@ A simple calculator that performs basic arithmetic operations such as addition, 
                     <input type="radio" name="opt-name" value="div"> Division
                 </label>
             </div>
-            <button id="cal" type="submit">Calculate</button>
+            <button id="cal" class="cal" type="submit">Calculate</button>
             <div class="res-out">
                 <label for="result">Result:</label>
-                <input type="text" id="result" readonly>
+                <input type="text" id="result" class="result" readonly>
             </div>
         </form>
     </main>
+    <footer>
+        <p>&copy; 2026 BrandName. All rights reserved.</p>
+    </footer>
 </body>
 
 </html>

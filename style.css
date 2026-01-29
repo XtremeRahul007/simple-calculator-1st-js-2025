@@ -5,6 +5,17 @@
     font-family: Arial, sans-serif
 }
 
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
 header {
     background-color: #1c4966;
     color: white;
@@ -19,6 +30,11 @@ main {
     padding: 1rem;
     border: #1c4966 2px solid;
     border-radius: 8px;
+    flex: 1;
+    margin: 1rem auto;
+    max-width: 600px;  
+    width: 95%;        
+    overflow: hidden;
 }
 
 main p {
@@ -88,40 +104,40 @@ main h2 {
     border: #1c4966 1px solid;
 }
 
-#opt-inp select {
+.opt-inp select {
     padding: .5rem;
     flex: 1;
     border: 1px solid #ccc;
     border-radius: 8px;
 }
 
-#opt-inp select:focus {
+.opt-inp select:focus {
     border-color: #1c4966;
     outline: none;
     box-shadow: #1c4966 0 0 5px;
 }
 
-#opt-inp {
+.opt-inp {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: .5rem;
 }
 
-#opt-inp label {
+.opt-inp label {
     font-weight: bold;
     margin-right: .5rem;
     font-size: 1rem;
 }
 
-#opt-inp input {
+.opt-inp input {
     transform: scale(1.2);
     margin-right: .2rem;
     cursor: pointer;
     accent-color: #1c4966;
 }
 
-#cal {
+.cal {
     padding: .5rem;
     background-color: #1c4966;
     color: white;
@@ -131,17 +147,36 @@ main h2 {
     font-size: 1em;
 }
 
-#cal:hover {
+.cal:hover {
     background-color: #163d55;
 }
 
-#cal:active {
+.cal:active {
     background-color: aliceblue;
     color: #1c4966;
     border: #1c4966 1px solid;
 }
 
-#result {
+.result {
     border: 1px solid #ccc;
     outline: none;
+}
+
+footer {
+    background-color: #1a3a4a;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.input-group {
+    display: flex;
+    flex: 2;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.input-group input {
+    flex: 1;
+    min-width: 0;
 }
