@@ -21,7 +21,7 @@ header {
     color: white;
     text-align: center;
     padding: 1rem;
-    font-size: 1.5em;
+    font-size: 1rem
 }
 
 main {
@@ -30,8 +30,15 @@ main {
     padding: 1rem;
     border: #1c4966 2px solid;
     border-radius: 8px;
+}
+.empty-padding{
     flex: 1;
-    padding-bottom: 5rem;
+}
+@media screen and (min-width: 481px) {
+    main {
+        margin: 1rem auto;
+        max-width: 600px;
+    }
 }
 
 main p {
@@ -73,6 +80,7 @@ main h2 {
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 1em;
+    min-width: 10rem;
 }
 
 .num-inp input:focus {
