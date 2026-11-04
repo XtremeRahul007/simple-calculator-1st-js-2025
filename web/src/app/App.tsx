@@ -36,7 +36,10 @@ function App() {
         {loading ? 'Loading WASM...' : 'Call Rust'}
       </button>
 
-      {message && <p className="text-slate-200">{message}</p>}
+      {message.trim() === '' ?
+        <p className="text-slate-200">Messages will appear here...</p> :
+        <p className="text-slate-200">{message}</p>
+      }
 
       {error && (<p className="text-red-500">{error}</p>)}
     </main>
