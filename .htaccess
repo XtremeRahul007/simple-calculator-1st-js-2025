@@ -1,0 +1,19 @@
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+RewriteCond %{QUERY_STRING} blog=(.+) [NC]
+RewriteRule ^(.*)$ http://www.example.com/Blog-Details.php/%1? [R=301, NC, L]
+Header set Connection keep-alive
+AddType text/cache-manifest .manifest
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteRule ^([^.]+)$ $1.php [NC,L]
+RewriteCond %{REQUEST_URI} !^/(robots\.txt|favicon\.ico|sitemap\.xml)$
+RewriteCond %{HTTP_HOST} !^www\.askapache\.com$ [NC]
+RewriteRule ^(.*)$ https://www.askapache.com/$1 [R=301,L]
+RewriteCond %{REQUEST_URI} !^/robots\.txt$ [NC]
+RewriteCond %{HTTP_HOST} !^www\.[a-z-]+\.[a-z]{2,6} [NC]
+RewriteCond %{HTTP_HOST} ([a-z-]+\.[a-z]{2,6})$   [NC]
+RewriteRule ^/(.*)$ http://%1/$1 [R=301,L]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^([^\.]+)$ $1.html [NC,L]
