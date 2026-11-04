@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "wasm:build": "wasm-pack build crates/calculator-wasm --target web --out-name calculator_wasm --out-dir ../../web/src/lib/wasm/pkg",
+    "predev": "npm run wasm:build",
+    "prebuild": "npm run wasm:build",
     "dev": "vite --config web/vite.config.ts",
     "build": "tsc -b web/tsconfig.json && vite build --config web/vite.config.ts",
     "lint": "oxlint web/src",
