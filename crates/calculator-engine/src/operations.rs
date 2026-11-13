@@ -1,4 +1,4 @@
-use dashu::{Decimal, Rational, float::round::mode::HalfAway};
+use dashu::{Decimal, Rational, dbig, float::round::mode::HalfAway};
 
 use crate::{Number, PrecisionContext};
 
@@ -8,6 +8,9 @@ pub enum CalculationError {
     FloatingPointError,
     SquareRootOfNegative,
     InvalidPowerDomain,
+    InvalidLogDomain,
+    InvalidTrigonometricDomain,
+    InvalidHyperbolicDomain,
 }
 
 pub fn add(
@@ -229,6 +232,257 @@ fn exact_square_root(value: &Rational) -> Option<Rational> {
         numerator_root.as_ibig().clone(),
         denominator_root,
     ))
+}
+
+pub fn natural_log(
+    number: &Number,
+    precision: &PrecisionContext,
+) -> Result<Number, CalculationError> {
+    let is_non_positive = match number {
+        Number::Exact(value) => value <= &Rational::ZERO,
+        Number::Approximate(value) => value <= &Decimal::ZERO,
+    };
+
+    if is_non_positive {
+        return Err(CalculationError::InvalidLogDomain);
+    }
+
+    let value = to_approximate(number, precision);
+    let context = precision.float_context();
+
+    let result = context
+        .ln(&value.repr(), None)
+        .map_err(|_| CalculationError::FloatingPointError)?;
+
+    Ok(Number::Approximate(result.value()))
+}
+
+pub fn common_log(
+    number: &Number,
+    precision: &PrecisionContext,
+) -> Result<Number, CalculationError> {
+    let is_non_positive = match number {
+        Number::Exact(value) => value <= &Rational::ZERO,
+        Number::Approximate(value) => value <= &Decimal::ZERO,
+    };
+
+    if is_non_positive {
+        return Err(CalculationError::InvalidLogDomain);
+    }
+
+    let value = to_approximate(number, precision);
+    let context = precision.float_context();
+
+    let result = context
+        .log10(&value.repr(), None)
+        .map_err(|_| CalculationError::FloatingPointError)?;
+
+    Ok(Number::Approximate(result.value()))
+}
+
+pub fn exponential(
+    number: &Number,
+    precision: &PrecisionContext,
+) -> Result<Number, CalculationError> {
+    let value = to_approximate(number, precision);
+    let context = precision.float_context();
+
+    let result = context
+        .exp(&value.repr(), None)
+        .map_err(|_| CalculationError::FloatingPointError)?;
+
+    Ok(Number::Approximate(result.value()))
+}
+
+pub fn power_of_ten(
+    number: &Number,
+    precision: &PrecisionContext,
+) -> Result<Number, CalculationError> {
+    let value = to_approximate(number, precision);
+    let context = precision.float_context();
+    let ten = dbig!(10);
+
+    let result = context
+        .powf(ten.repr(), &value.repr(), None)
+        .map_err(|_| CalculationError::FloatingPointError)?;
+
+    Ok(Number::Approximate(result.value()))
+}
+
+pub fn sine(number: &Number, precision: &PrecisionContext) -> Result<Number, CalculationError> {
+    let value = to_approximate(number, precision);
+    let context = precision.float_context();
+
+    let result = context
+        .sin(&value.repr(), None)
+        .map_err(|_| CalculationError::FloatingPointError)?;
+
+    Ok(Number::Approximate(result.value()))
+}
+
+pub fn cosine(number: &Number, precision: &PrecisionContext) -> Result<Number, CalculationError> {
+    let value = to_approximate(number, precision);
+    let context = precision.float_context();
+
+    let result = context
+        .cos(&value.repr(), None)
+        .map_err(|_| CalculationError::FloatingPointError)?;
+
+    Ok(Number::Approximate(result.value()))
+}
+
+pub fn tangent(number: &Number, precision: &PrecisionContext) -> Result<Number, CalculationError> {
+    let value = to_approximate(number, precision);
+    let context = precision.float_context();
+
+    let result = context
+        .tan(&value.repr(), None)
+        .map_err(|_| CalculationError::FloatingPointError)?;
+
+    Ok(Number::Approximate(result.value()))
+}
+
+pub fn arcsine(number: &Number, precision: &PrecisionContext) -> Result<Number, CalculationError> {
+    let value = to_approximate(number, precision);
+
+    if value < Decimal::NEG_ONE || value > Decimal::ONE {
+        return Err(CalculationError::InvalidTrigonometricDomain);
+    }
+
+    let context = precision.float_context();
+
+    let result = context
+        .asin(&value.repr(), None)
+        .map_err(|_| CalculationError::FloatingPointError)?;
+
+    Ok(Number::Approximate(result.value()))
+}
+
+pub fn arccosine(
+    number: &Number,
+    precision: &PrecisionContext,
+) -> Result<Number, CalculationError> {
+    let value = to_approximate(number, precision);
+
+    if value < Decimal::NEG_ONE || value > Decimal::ONE {
+        return Err(CalculationError::InvalidTrigonometricDomain);
+    }
+
+    let context = precision.float_context();
+
+    let result = context
+        .acos(&value.repr(), None)
+        .map_err(|_| CalculationError::FloatingPointError)?;
+
+    Ok(Number::Approximate(result.value()))
+}
+
+pub fn arctangent(
+    number: &Number,
+    precision: &PrecisionContext,
+) -> Result<Number, CalculationError> {
+    let value = to_approximate(number, precision);
+    let context = precision.float_context();
+
+    let result = context
+        .atan(&value.repr(), None)
+        .map_err(|_| CalculationError::FloatingPointError)?;
+
+    Ok(Number::Approximate(result.value()))
+}
+
+pub fn hyperbolic_sine(
+    number: &Number,
+    precision: &PrecisionContext,
+) -> Result<Number, CalculationError> {
+    let value = to_approximate(number, precision);
+    let context = precision.float_context();
+
+    let result = context
+        .sinh(&value.repr(), None)
+        .map_err(|_| CalculationError::FloatingPointError)?;
+
+    Ok(Number::Approximate(result.value()))
+}
+
+pub fn hyperbolic_cosine(
+    number: &Number,
+    precision: &PrecisionContext,
+) -> Result<Number, CalculationError> {
+    let value = to_approximate(number, precision);
+    let context = precision.float_context();
+
+    let result = context
+        .cosh(&value.repr(), None)
+        .map_err(|_| CalculationError::FloatingPointError)?;
+
+    Ok(Number::Approximate(result.value()))
+}
+
+pub fn hyperbolic_tangent(
+    number: &Number,
+    precision: &PrecisionContext,
+) -> Result<Number, CalculationError> {
+    let value = to_approximate(number, precision);
+    let context = precision.float_context();
+
+    let result = context
+        .tanh(&value.repr(), None)
+        .map_err(|_| CalculationError::FloatingPointError)?;
+
+    Ok(Number::Approximate(result.value()))
+}
+
+pub fn inverse_hyperbolic_sine(
+    number: &Number,
+    precision: &PrecisionContext,
+) -> Result<Number, CalculationError> {
+    let value = to_approximate(number, precision);
+    let context = precision.float_context();
+
+    let result = context
+        .asinh(&value.repr(), None)
+        .map_err(|_| CalculationError::FloatingPointError)?;
+
+    Ok(Number::Approximate(result.value()))
+}
+
+pub fn inverse_hyperbolic_cosine(
+    number: &Number,
+    precision: &PrecisionContext,
+) -> Result<Number, CalculationError> {
+    let value = to_approximate(number, precision);
+
+    if value < Decimal::ONE {
+        return Err(CalculationError::InvalidHyperbolicDomain);
+    }
+
+    let context = precision.float_context();
+
+    let result = context
+        .acosh(&value.repr(), None)
+        .map_err(|_| CalculationError::FloatingPointError)?;
+
+    Ok(Number::Approximate(result.value()))
+}
+
+pub fn inverse_hyperbolic_tangent(
+    number: &Number,
+    precision: &PrecisionContext,
+) -> Result<Number, CalculationError> {
+    let value = to_approximate(number, precision);
+
+    if value <= Decimal::NEG_ONE || value >= Decimal::ONE {
+        return Err(CalculationError::InvalidHyperbolicDomain);
+    }
+
+    let context = precision.float_context();
+
+    let result = context
+        .atanh(&value.repr(), None)
+        .map_err(|_| CalculationError::FloatingPointError)?;
+
+    Ok(Number::Approximate(result.value()))
 }
 
 fn to_approximate(number: &Number, precision: &PrecisionContext) -> Decimal {

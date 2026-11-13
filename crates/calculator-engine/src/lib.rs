@@ -1,7 +1,9 @@
+pub mod constants;
 pub mod number;
 pub mod operations;
 pub mod precision;
 
+pub use constants::*;
 pub use number::*;
 pub use operations::*;
 pub use precision::*;
@@ -347,5 +349,389 @@ mod test {
             fractional_power(&base, &exponent, &precision),
             Err(CalculationError::DivisionByZero)
         );
+    }
+
+    #[test]
+    fn natural_log_of_one_is_zero() {
+        let number = Number::parse_exact("1").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = natural_log(&number, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_approximate("0").unwrap());
+    }
+
+    #[test]
+    fn natural_log_of_non_positive_number_returns_error() {
+        let number = Number::parse_exact("-2").unwrap();
+        let precision = PrecisionContext::default();
+
+        assert_eq!(
+            natural_log(&number, &precision),
+            Err(CalculationError::InvalidLogDomain)
+        );
+    }
+
+    #[test]
+    fn common_log_of_one_is_zero() {
+        let number = Number::parse_exact("1").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = common_log(&number, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_approximate("0").unwrap());
+    }
+
+    #[test]
+    fn common_log_of_one_hundred_is_two() {
+        let number = Number::parse_exact("100").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = common_log(&number, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_approximate("2").unwrap());
+    }
+
+    #[test]
+    fn common_log_of_zero_returns_error() {
+        let number = Number::parse_exact("0").unwrap();
+        let precision = PrecisionContext::default();
+
+        assert_eq!(
+            common_log(&number, &precision),
+            Err(CalculationError::InvalidLogDomain)
+        );
+    }
+
+    #[test]
+    fn exponential_of_zero_is_one() {
+        let number = Number::parse_exact("0").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = exponential(&number, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_approximate("1").unwrap());
+    }
+
+    #[test]
+    fn exponential_of_one_is_approximate() {
+        let number = Number::parse_exact("1").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = exponential(&number, &precision).unwrap();
+
+        assert!(matches!(result, Number::Approximate(_)));
+    }
+
+    #[test]
+    fn power_of_ten_zero_is_one() {
+        let number = Number::parse_exact("0").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = power_of_ten(&number, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_approximate("1").unwrap());
+    }
+
+    #[test]
+    fn power_of_ten_two_is_one_hundred() {
+        let number = Number::parse_exact("2").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = power_of_ten(&number, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_approximate("100").unwrap());
+    }
+
+    #[test]
+    fn sine_of_zero_is_zero() {
+        let number = Number::parse_exact("0").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = sine(&number, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_approximate("0").unwrap());
+    }
+
+    #[test]
+    fn cosine_of_zero_is_one() {
+        let number = Number::parse_exact("0").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = cosine(&number, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_approximate("1").unwrap());
+    }
+
+    #[test]
+    fn tangent_of_zero_is_zero() {
+        let number = Number::parse_exact("0").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = tangent(&number, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_approximate("0").unwrap());
+    }
+
+    #[test]
+    fn sine_returns_approximate_result() {
+        let number = Number::parse_exact("1").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = sine(&number, &precision).unwrap();
+
+        assert!(matches!(result, Number::Approximate(_)));
+    }
+
+    #[test]
+    fn cosine_returns_approximate_result() {
+        let number = Number::parse_exact("1").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = cosine(&number, &precision).unwrap();
+
+        assert!(matches!(result, Number::Approximate(_)));
+    }
+
+    #[test]
+    fn tangent_returns_approximate_result() {
+        let number = Number::parse_exact("1").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = tangent(&number, &precision).unwrap();
+
+        assert!(matches!(result, Number::Approximate(_)));
+    }
+
+    #[test]
+    fn arcsine_of_zero_is_zero() {
+        let number = Number::parse_exact("0").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = arcsine(&number, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_approximate("0").unwrap());
+    }
+
+    #[test]
+    fn arccosine_of_one_is_zero() {
+        let number = Number::parse_exact("1").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = arccosine(&number, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_approximate("0").unwrap());
+    }
+
+    #[test]
+    fn arctangent_of_zero_is_zero() {
+        let number = Number::parse_exact("0").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = arctangent(&number, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_approximate("0").unwrap());
+    }
+
+    #[test]
+    fn arcsine_rejects_values_outside_domain() {
+        let number = Number::parse_exact("2").unwrap();
+        let precision = PrecisionContext::default();
+
+        assert_eq!(
+            arcsine(&number, &precision),
+            Err(CalculationError::InvalidTrigonometricDomain)
+        );
+    }
+
+    #[test]
+    fn arccosine_rejects_values_outside_domain() {
+        let number = Number::parse_exact("-2").unwrap();
+        let precision = PrecisionContext::default();
+
+        assert_eq!(
+            arccosine(&number, &precision),
+            Err(CalculationError::InvalidTrigonometricDomain)
+        );
+    }
+
+    #[test]
+    fn arctangent_accepts_large_values() {
+        let number = Number::parse_exact("1000000").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = arctangent(&number, &precision).unwrap();
+
+        assert!(matches!(result, Number::Approximate(_)));
+    }
+
+    #[test]
+    fn hyperbolic_sine_of_zero_is_zero() {
+        let number = Number::parse_exact("0").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = hyperbolic_sine(&number, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_approximate("0").unwrap());
+    }
+
+    #[test]
+    fn hyperbolic_cosine_of_zero_is_one() {
+        let number = Number::parse_exact("0").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = hyperbolic_cosine(&number, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_approximate("1").unwrap());
+    }
+
+    #[test]
+    fn hyperbolic_tangent_of_zero_is_zero() {
+        let number = Number::parse_exact("0").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = hyperbolic_tangent(&number, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_approximate("0").unwrap());
+    }
+
+    #[test]
+    fn hyperbolic_sine_returns_approximate_result() {
+        let number = Number::parse_exact("2").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = hyperbolic_sine(&number, &precision).unwrap();
+
+        assert!(matches!(result, Number::Approximate(_)));
+    }
+
+    #[test]
+    fn hyperbolic_cosine_returns_approximate_result() {
+        let number = Number::parse_exact("2").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = hyperbolic_cosine(&number, &precision).unwrap();
+
+        assert!(matches!(result, Number::Approximate(_)));
+    }
+
+    #[test]
+    fn hyperbolic_tangent_returns_approximate_result() {
+        let number = Number::parse_exact("2").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = hyperbolic_tangent(&number, &precision).unwrap();
+
+        assert!(matches!(result, Number::Approximate(_)));
+    }
+
+    #[test]
+    fn inverse_hyperbolic_sine_of_zero_is_zero() {
+        let number = Number::parse_exact("0").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = inverse_hyperbolic_sine(&number, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_approximate("0").unwrap());
+    }
+
+    #[test]
+    fn inverse_hyperbolic_cosine_of_one_is_zero() {
+        let number = Number::parse_exact("1").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = inverse_hyperbolic_cosine(&number, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_approximate("0").unwrap());
+    }
+
+    #[test]
+    fn inverse_hyperbolic_tangent_of_zero_is_zero() {
+        let number = Number::parse_exact("0").unwrap();
+        let precision = PrecisionContext::default();
+
+        let result = inverse_hyperbolic_tangent(&number, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_approximate("0").unwrap());
+    }
+
+    #[test]
+    fn inverse_hyperbolic_cosine_rejects_values_below_one() {
+        let number = Number::parse_exact("0").unwrap();
+        let precision = PrecisionContext::default();
+
+        assert_eq!(
+            inverse_hyperbolic_cosine(&number, &precision),
+            Err(CalculationError::InvalidHyperbolicDomain)
+        );
+    }
+
+    #[test]
+    fn inverse_hyperbolic_tangent_rejects_one() {
+        let number = Number::parse_exact("1").unwrap();
+        let precision = PrecisionContext::default();
+
+        assert_eq!(
+            inverse_hyperbolic_tangent(&number, &precision),
+            Err(CalculationError::InvalidHyperbolicDomain)
+        );
+    }
+
+    #[test]
+    fn inverse_hyperbolic_tangent_rejects_negative_one() {
+        let number = Number::parse_exact("-1").unwrap();
+        let precision = PrecisionContext::default();
+
+        assert_eq!(
+            inverse_hyperbolic_tangent(&number, &precision),
+            Err(CalculationError::InvalidHyperbolicDomain)
+        );
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use dashu::Decimal;
+
+        use super::*;
+
+        fn assert_between(number: Number, lower: &str, upper: &str) {
+            let Number::Approximate(value) = number else {
+                panic!("Expected an approximate number");
+            };
+
+            let lower: Decimal = lower.parse().unwrap();
+            let upper: Decimal = upper.parse().unwrap();
+
+            assert!(value > lower);
+            assert!(value < upper);
+        }
+
+        #[test]
+        fn calculates_pi() {
+            let precision = PrecisionContext::default();
+
+            assert_between(pi(&precision), "3", "4");
+        }
+
+        #[test]
+        fn calculates_euler_number() {
+            let precision = PrecisionContext::default();
+
+            assert_between(euler(&precision), "2", "3");
+        }
+
+        #[test]
+        fn calculates_tau() {
+            let precision = PrecisionContext::default();
+
+            assert_between(tau(&precision).unwrap(), "6", "7");
+        }
+
+        #[test]
+        fn calculates_golden_ratio() {
+            let precision = PrecisionContext::default();
+
+            assert_between(golden_ratio(&precision).unwrap(), "1", "2");
+        }
     }
 }
