@@ -734,4 +734,392 @@ mod test {
             assert_between(golden_ratio(&precision).unwrap(), "1", "2");
         }
     }
+
+    #[test]
+    fn factorial_of_five_is_120() {
+        let precision = PrecisionContext::default();
+
+        let result = factorial(5, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_exact("120").unwrap());
+    }
+
+    #[test]
+    fn factorial_of_zero_is_one() {
+        let precision = PrecisionContext::default();
+
+        let result = factorial(0, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_exact("1").unwrap());
+    }
+
+    #[test]
+    fn permutations_of_five_choose_two_positions() {
+        let precision = PrecisionContext::default();
+
+        let result = permutations(5, 2, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_exact("20").unwrap());
+    }
+
+    #[test]
+    fn combinations_of_five_choose_two() {
+        let precision = PrecisionContext::default();
+
+        let result = combinations(5, 2, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_exact("10").unwrap());
+    }
+
+    #[test]
+    fn combinations_with_zero_selection_is_one() {
+        let precision = PrecisionContext::default();
+
+        let result = combinations(5, 0, &precision).unwrap();
+
+        assert_eq!(result, Number::parse_exact("1").unwrap());
+    }
+
+    #[test]
+    fn permutations_reject_invalid_input() {
+        let precision = PrecisionContext::default();
+
+        assert_eq!(
+            permutations(3, 5, &precision),
+            Err(CalculationError::InvalidCombinatoricsInput)
+        );
+    }
+
+    #[test]
+    fn calculates_gcd() {
+        let a = Number::parse_exact("24").unwrap();
+        let b = Number::parse_exact("36").unwrap();
+
+        let result = greatest_common_divisor(&a, &b).unwrap();
+
+        assert_eq!(result, Number::parse_exact("12").unwrap());
+    }
+
+    #[test]
+    fn calculates_gcd_with_negative_numbers() {
+        let a = Number::parse_exact("-24").unwrap();
+        let b = Number::parse_exact("36").unwrap();
+
+        let result = greatest_common_divisor(&a, &b).unwrap();
+
+        assert_eq!(result, Number::parse_exact("12").unwrap());
+    }
+
+    #[test]
+    fn gcd_of_two_zeros_is_zero() {
+        let zero = Number::parse_exact("0").unwrap();
+
+        let result = greatest_common_divisor(&zero, &zero).unwrap();
+
+        assert_eq!(result, zero);
+    }
+
+    #[test]
+    fn calculates_lcm() {
+        let a = Number::parse_exact("4").unwrap();
+        let b = Number::parse_exact("6").unwrap();
+
+        let result = least_common_multiple(&a, &b).unwrap();
+
+        assert_eq!(result, Number::parse_exact("12").unwrap());
+    }
+
+    #[test]
+    fn lcm_with_zero_is_zero() {
+        let a = Number::parse_exact("12").unwrap();
+        let zero = Number::parse_exact("0").unwrap();
+
+        let result = least_common_multiple(&a, &zero).unwrap();
+
+        assert_eq!(result, zero);
+    }
+
+    #[test]
+    fn calculates_modulo() {
+        let a = Number::parse_exact("17").unwrap();
+        let b = Number::parse_exact("5").unwrap();
+
+        let result = modulo(&a, &b).unwrap();
+
+        assert_eq!(result, Number::parse_exact("2").unwrap());
+    }
+
+    #[test]
+    fn modulo_of_negative_number_is_non_negative() {
+        let a = Number::parse_exact("-17").unwrap();
+        let b = Number::parse_exact("5").unwrap();
+
+        let result = modulo(&a, &b).unwrap();
+
+        assert_eq!(result, Number::parse_exact("3").unwrap());
+    }
+
+    #[test]
+    fn modulo_by_zero_returns_error() {
+        let a = Number::parse_exact("17").unwrap();
+        let zero = Number::parse_exact("0").unwrap();
+
+        assert_eq!(modulo(&a, &zero), Err(CalculationError::DivisionByZero));
+    }
+
+    #[test]
+    fn gcd_rejects_fractional_input() {
+        let a = Number::parse_exact("3/2").unwrap();
+        let b = Number::parse_exact("6").unwrap();
+
+        assert_eq!(
+            greatest_common_divisor(&a, &b),
+            Err(CalculationError::IntegerInputRequired)
+        );
+    }
+
+    #[test]
+    fn identifies_prime_number() {
+        let number = Number::parse_exact("17").unwrap();
+
+        assert!(is_prime(&number).unwrap());
+    }
+
+    #[test]
+    fn identifies_composite_number() {
+        let number = Number::parse_exact("18").unwrap();
+
+        assert!(!is_prime(&number).unwrap());
+    }
+
+    #[test]
+    fn zero_is_not_prime() {
+        let number = Number::parse_exact("0").unwrap();
+
+        assert!(!is_prime(&number).unwrap());
+    }
+
+    #[test]
+    fn one_is_not_prime() {
+        let number = Number::parse_exact("1").unwrap();
+
+        assert!(!is_prime(&number).unwrap());
+    }
+
+    #[test]
+    fn negative_number_is_not_prime() {
+        let number = Number::parse_exact("-7").unwrap();
+
+        assert!(!is_prime(&number).unwrap());
+    }
+
+    #[test]
+    fn prime_factorization_of_60() {
+        let number = Number::parse_exact("60").unwrap();
+
+        let result = prime_factors(&number).unwrap();
+
+        let expected = ["2", "2", "3", "5"].map(|value| Number::parse_exact(value).unwrap());
+
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn prime_factorization_of_prime_number() {
+        let number = Number::parse_exact("13").unwrap();
+
+        let result = prime_factors(&number).unwrap();
+
+        assert_eq!(result, vec![Number::parse_exact("13").unwrap()]);
+    }
+
+    #[test]
+    fn prime_factorization_of_negative_number() {
+        let number = Number::parse_exact("-12").unwrap();
+
+        let result = prime_factors(&number).unwrap();
+
+        let expected = ["-1", "2", "2", "3"].map(|value| Number::parse_exact(value).unwrap());
+
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn prime_factorization_of_zero_returns_error() {
+        let number = Number::parse_exact("0").unwrap();
+
+        assert_eq!(
+            prime_factors(&number),
+            Err(CalculationError::PrimeFactorizationOfZero)
+        );
+    }
+
+    #[test]
+    fn floors_positive_and_negative_numbers() {
+        assert_eq!(
+            floor(&Number::parse_exact("3.7").unwrap()),
+            Number::from_integer(3)
+        );
+
+        assert_eq!(
+            floor(&Number::parse_exact("-3.7").unwrap()),
+            Number::from_integer(-4)
+        );
+    }
+
+    #[test]
+    fn ceilings_positive_and_negative_numbers() {
+        assert_eq!(
+            ceiling(&Number::parse_exact("3.2").unwrap()),
+            Number::from_integer(4)
+        );
+
+        assert_eq!(
+            ceiling(&Number::parse_exact("-3.2").unwrap()),
+            Number::from_integer(-3)
+        );
+    }
+
+    #[test]
+    fn rounds_half_away_from_zero() {
+        assert_eq!(
+            round(&Number::parse_exact("2.5").unwrap()),
+            Number::from_integer(3)
+        );
+
+        assert_eq!(
+            round(&Number::parse_exact("-2.5").unwrap()),
+            Number::from_integer(-3)
+        );
+
+        assert_eq!(
+            round(&Number::parse_exact("2.4").unwrap()),
+            Number::from_integer(2)
+        );
+    }
+
+    #[test]
+    fn truncates_toward_zero() {
+        assert_eq!(
+            truncate(&Number::parse_exact("3.9").unwrap()),
+            Number::from_integer(3)
+        );
+
+        assert_eq!(
+            truncate(&Number::parse_exact("-3.9").unwrap()),
+            Number::from_integer(-3)
+        );
+    }
+
+    #[test]
+    fn calculates_cube_roots() {
+        let precision = PrecisionContext::default();
+
+        let result = cube_root(&Number::parse_exact("27").unwrap(), &precision).unwrap();
+
+        assert_eq!(result, Number::from_approximate("3".parse().unwrap()));
+
+        let negative = cube_root(&Number::parse_exact("-27").unwrap(), &precision).unwrap();
+
+        assert_eq!(negative, Number::from_approximate("-3".parse().unwrap()));
+    }
+
+    #[test]
+    fn calculates_nth_roots() {
+        let precision = PrecisionContext::default();
+
+        let result = nth_root(&Number::parse_exact("16").unwrap(), 4, &precision).unwrap();
+
+        assert_eq!(result, Number::from_approximate("2".parse().unwrap()));
+    }
+
+    #[test]
+    fn rejects_invalid_root_degree() {
+        let precision = PrecisionContext::default();
+
+        assert_eq!(
+            nth_root(&Number::from_integer(-8), 0, &precision),
+            Err(CalculationError::InvalidRootDegree)
+        );
+    }
+
+    #[test]
+    fn rejects_even_root_of_negative_number() {
+        let precision = PrecisionContext::default();
+
+        assert_eq!(
+            nth_root(&Number::from_integer(-16), 2, &precision),
+            Err(CalculationError::EvenRootOfNegative)
+        );
+    }
+
+    #[test]
+    fn calculates_exact_reciprocal() {
+        let precision = PrecisionContext::default();
+
+        let result = reciprocal(&Number::parse_exact("4").unwrap(), &precision).unwrap();
+
+        assert_eq!(result, Number::parse_exact("1/4").unwrap());
+    }
+
+    #[test]
+    fn reciprocal_of_zero_returns_error() {
+        let precision = PrecisionContext::default();
+
+        assert_eq!(
+            reciprocal(&Number::from_integer(0), &precision),
+            Err(CalculationError::DivisionByZero)
+        );
+    }
+
+    #[test]
+    fn calculates_sign() {
+        assert_eq!(sign(&Number::from_integer(25)), Number::from_integer(1));
+        assert_eq!(sign(&Number::from_integer(-25)), Number::from_integer(-1));
+        assert_eq!(sign(&Number::from_integer(0)), Number::from_integer(0));
+    }
+
+    #[test]
+    fn calculates_minimum() {
+        let a = Number::parse_exact("10").unwrap();
+        let b = Number::parse_exact("20").unwrap();
+
+        assert_eq!(minimum(&a, &b), a);
+    }
+
+    #[test]
+    fn calculates_maximum() {
+        let a = Number::parse_exact("10").unwrap();
+        let b = Number::parse_exact("20").unwrap();
+
+        assert_eq!(maximum(&a, &b), b);
+    }
+
+    #[test]
+    fn calculates_exact_percentage() {
+        let precision = PrecisionContext::default();
+
+        let result = percentage(
+            &Number::from_integer(250),
+            &Number::from_integer(20),
+            &precision,
+        )
+        .unwrap();
+
+        assert_eq!(result, Number::from_integer(50));
+    }
+
+    #[test]
+    fn calculates_fractional_percentage() {
+        let precision = PrecisionContext::default();
+
+        let result = percentage(
+            &Number::from_integer(100),
+            &Number::parse_exact("12.5").unwrap(),
+            &precision,
+        )
+        .unwrap();
+
+        assert_eq!(result, Number::parse_exact("25/2").unwrap());
+    }
 }
