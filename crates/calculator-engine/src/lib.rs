@@ -1,6 +1,7 @@
 pub mod constants;
 pub mod number;
 pub mod operations;
+pub mod parser;
 pub mod precision;
 
 pub use constants::*;
