@@ -20,7 +20,7 @@ pub enum Expression {
 
     Unary {
         operator: UnaryOperator,
-        oparand: Box<Expression>,
+        operand: Box<Expression>,
     },
 
     Binary {
@@ -29,5 +29,3 @@ pub enum Expression {
         right: Box<Expression>,
     },
 }
-
-

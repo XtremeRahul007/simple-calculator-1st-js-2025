@@ -217,4 +217,116 @@ mod tests {
             Err(LexerError::InvalidNumber(_))
         ));
     }
+
+    #[cfg(test)]
+    mod tests {
+        use crate::parser::{
+            BinaryOperator, Expression, UnaryOperator,
+            parser::{ParserError, parse},
+            tokenize,
+        };
+
+        fn parse_input(input: &str) -> Result<Expression, ParserError> {
+            let tokens = tokenize(input).unwrap();
+            parse(tokens)
+        }
+
+        #[test]
+        fn parses_number() {
+            assert_eq!(parse_input("42").unwrap(), Expression::Number("42".into()));
+        }
+
+        #[test]
+        fn respects_operator_precedence() {
+            let result = parse_input("2 + 3 * 4").unwrap();
+
+            assert_eq!(
+                result,
+                Expression::Binary {
+                    operator: BinaryOperator::Add,
+                    left: Box::new(Expression::Number("2".into())),
+                    right: Box::new(Expression::Binary {
+                        operator: BinaryOperator::Multiply,
+                        left: Box::new(Expression::Number("3".into())),
+                        right: Box::new(Expression::Number("4".into())),
+                    }),
+                }
+            );
+        }
+
+        #[test]
+        fn parses_parentheses() {
+            assert!(parse_input("(2 + 3) * 4").is_ok());
+        }
+
+        #[test]
+        fn parses_unary_minus() {
+            assert!(matches!(
+                parse_input("-5").unwrap(),
+                Expression::Unary {
+                    operator: UnaryOperator::Negative,
+                    ..
+                }
+            ));
+        }
+
+        #[test]
+        fn parses_right_associative_power() {
+            let result = parse_input("2 ^ 3 ^ 2").unwrap();
+
+            assert!(matches!(
+                result,
+                Expression::Binary {
+                    operator: BinaryOperator::Power,
+                    right,
+                    ..
+                } if matches!(
+                    *right,
+                    Expression::Binary {
+                        operator: BinaryOperator::Power,
+                        ..
+                    }
+                )
+            ));
+        }
+
+        #[test]
+        fn parses_negative_exponent() {
+            assert!(parse_input("2 ^ -3").is_ok());
+        }
+
+        #[test]
+        fn unary_minus_has_lower_precedence_than_power() {
+            let result = parse_input("-2 ^ 2").unwrap();
+
+            assert!(matches!(
+                result,
+                Expression::Unary {
+                    operator: UnaryOperator::Negative,
+                    operand,
+                } if matches!(
+                    *operand,
+                    Expression::Binary {
+                        operator: BinaryOperator::Power,
+                        ..
+                    }
+                )
+            ));
+        }
+
+        #[test]
+        fn rejects_unclosed_parentheses() {
+            assert!(parse_input("(2 + 3").is_err());
+        }
+
+        #[test]
+        fn rejects_trailing_operator() {
+            assert!(parse_input("2 +").is_err());
+        }
+
+        #[test]
+        fn rejects_unexpected_tokens() {
+            assert!(parse_input("2 3").is_err());
+        }
+    }
 }
