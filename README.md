@@ -103,15 +103,11 @@ The Rust calculation engine is designed to remain independent of browser-specifi
 <!-- LANG_STATS_START -->
 | Language | Files | Lines of code | Share |
 | :--- | ---: | ---: | ---: |
-| JSON | 6 | 2829 | 51.7% |
-| Rust | 16 | 2356 | 43% |
-| TypeScript | 4 | 107 | 2% |
-| Markdown | 2 | 104 | 1.9% |
-| TOML | 3 | 31 | 0.6% |
-| SVG | 2 | 25 | 0.5% |
-| HTML | 1 | 13 | 0.2% |
-| CSS | 1 | 8 | 0.1% |
-| **Total** | **35** | **5473** | **100%** |
+| Rust | 16 | 2356 | 94.8% |
+| TypeScript | 4 | 107 | 4.3% |
+| HTML | 1 | 13 | 0.5% |
+| CSS | 1 | 8 | 0.3% |
+| **Total** | **22** | **2484** | **100%** |
 <!-- LANG_STATS_END -->
 
 ## Origin
