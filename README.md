@@ -101,7 +101,7 @@ The Rust calculation engine is designed to remain independent of browser-specifi
 > This table is generated automatically by a GitHub Actions workflow on every push to the `remastered` branch.
 
 <!-- LANG_STATS_START -->
-<p align="center"><img src="/home/runner/work/simple-calculator-1st-js-2025/simple-calculator-1st-js-2025/docs/language-stats.svg" alt="Language breakdown" width="480"></p>
+<p align="center"><img src="docs/language-stats.svg" alt="Language breakdown" width="480"></p>
 <!-- LANG_STATS_END -->
 
 ## Origin
