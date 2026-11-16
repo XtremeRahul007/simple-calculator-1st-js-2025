@@ -1,0 +1,54 @@
+name: Update Language Statistics
+
+on:
+  push:
+    branches:
+      - remastered
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install cloc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cloc
+
+      - name: Generate language statistics
+        run: |
+          cloc . \
+            --include-lang="Rust,TypeScript,JavaScript,JSX,CSS,HTML,Python,Bourne Shell,Dockerfile,YAML,SQL,Go,C,C++" \
+            --exclude-dir=node_modules,vendor,target,dist,build,.git,.venv,venv,coverage,.next,out,pkg \
+            --json \
+            --out=stats.json
+
+      - name: Generate SVG and update README
+        run: |
+          python3 .github/scripts/language_stats.py
+
+      - name: Commit generated changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add README.md docs/language-stats.svg
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: update language statistics"
+            git push origin HEAD:${GITHUB_REF_NAME}
+          fi

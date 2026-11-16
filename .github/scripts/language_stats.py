@@ -9,9 +9,11 @@ import re
 import sys
 import tempfile
 
-STATS = pathlib.Path("stats.json")
-README = pathlib.Path("README.md")
-SVG_PATH = pathlib.Path("docs/language-stats.svg")
+ROOT_DIR = pathlib.Path(__file__).resolve().parents[2]
+
+STATS = ROOT_DIR / "stats.json"
+README = ROOT_DIR / "README.md"
+SVG_PATH = ROOT_DIR / "docs" / "language-stats.svg"
 
 START = "<!-- LANG_STATS_START -->"
 END = "<!-- LANG_STATS_END -->"
