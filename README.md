@@ -101,13 +101,7 @@ The Rust calculation engine is designed to remain independent of browser-specifi
 > This table is generated automatically by a GitHub Actions workflow on every push to the `remastered` branch.
 
 <!-- LANG_STATS_START -->
-| Language | Files | Lines of code | Share |
-| :--- | ---: | ---: | ---: |
-| Rust | 16 | 2356 | 94.8% |
-| TypeScript | 4 | 107 | 4.3% |
-| HTML | 1 | 13 | 0.5% |
-| CSS | 1 | 8 | 0.3% |
-| **Total** | **22** | **2484** | **100%** |
+<p align="center"><img src="/home/runner/work/simple-calculator-1st-js-2025/simple-calculator-1st-js-2025/docs/language-stats.svg" alt="Language breakdown" width="480"></p>
 <!-- LANG_STATS_END -->
 
 ## Origin
