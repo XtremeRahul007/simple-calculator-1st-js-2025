@@ -31,7 +31,7 @@ jobs:
         run: |
           cloc . \
             --include-lang="Rust,TypeScript,JavaScript,JSX,CSS,HTML,Python,Bourne Shell,Dockerfile,YAML,SQL,Go,C,C++" \
-            --exclude-dir=node_modules,vendor,target,dist,build,.git,.venv,venv,coverage,.next,out,pkg \
+            --exclude-dir=node_modules,vendor,target,dist,build,.git,.venv,venv,coverage,.next,out,pkg,.github \
             --json \
             --out=stats.json
 
