@@ -29,7 +29,10 @@ jobs:
 
       - name: Generate stats table
         run: |
-          cloc --vcs=git --json --exclude-dir=.github . > stats.json
+          cloc --vcs=git --json \
+            --exclude-dir=.github \
+            --exclude-lang=SVG,TOML,Markdown,JSON \
+            . > stats.json
 
           jq -r '
             .SUM.code as $total
