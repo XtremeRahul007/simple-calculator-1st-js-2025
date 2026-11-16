@@ -1,63 +1,76 @@
-name: Update Branch Language Stats
+name: Update Language Stats
 
 on:
   push:
-    branches:
-      - remastered
+    branches: [remastered]
+    paths-ignore:
+      - README.md
+  workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: language-stats-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   update-readme:
+    name: Update README language table
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout branch
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install cloc and calculate language stats
-        id: stats
+      - name: Install tools
         run: |
-          sudo apt-get update && sudo apt-get install -y cloc jq
-          cloc . --json --exclude-dir=.git,.github > stats.json
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq cloc jq
 
-          # Format JSON into a Markdown table with percentages
-          TABLE=$(jq -r '
-            .SUM.code as $total |
-            to_entries |
-            map(select(.key != "header" and .key != "SUM")) |
-            sort_by(-.value.code) |
-            "| Language | Files | Lines of Code | Percentage |\n| :--- | :---: | :---: | :---: |\n" +
-            (map("| \(.key) | \(.value.nFiles) | \(.value.code) | \((.value.code / $total * 10000 | round) / 100)% |") | join("\n"))
-          ' stats.json)
-
-          echo "TABLE<<EOF" >> $GITHUB_OUTPUT
-          echo "$TABLE" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
-      - name: Update README.md
-        env:
-          STATS_TABLE: ${{ steps.stats.outputs.TABLE }}
+      - name: Generate stats table
         run: |
-          python3 -c '
-          import os, re
-          with open("README.md", "r") as f:
-              content = f.read()
-          table = os.environ["STATS_TABLE"]
-          updated = re.sub(
-              r"<!-- LANG_STATS_START -->.*?<!-- LANG_STATS_END -->",
-              f"<!-- LANG_STATS_START -->\n{table}\n<!-- LANG_STATS_END -->",
-              content,
-              flags=re.DOTALL
+          cloc --vcs=git --json --exclude-dir=.github . > stats.json
+
+          jq -r '
+            .SUM.code as $total
+            | [to_entries[] | select(.key != "header" and .key != "SUM")]
+            | sort_by(-.value.code)
+            | (
+                "| Language | Files | Lines of code | Share |",
+                "| :--- | ---: | ---: | ---: |",
+                (.[] | "| \(.key) | \(.value.nFiles) | \(.value.code) | \((.value.code / $total * 1000 | round) / 10)% |"),
+                "| **Total** | **\(map(.value.nFiles) | add)** | **\($total)** | **100%** |"
+              )
+          ' stats.json > table.md
+
+      - name: Update README
+        run: |
+          python3 - <<'PY'
+          import re, pathlib
+
+          readme = pathlib.Path("README.md")
+          table = pathlib.Path("table.md").read_text().strip()
+          block = f"<!-- LANG_STATS_START -->\n{table}\n<!-- LANG_STATS_END -->"
+
+          pattern = re.compile(
+              r"<!-- LANG_STATS_START -->.*?<!-- LANG_STATS_END -->", re.DOTALL
           )
-          with open("README.md", "w") as f:
-              f.write(updated)
-          '
+          content = readme.read_text()
+          if not pattern.search(content):
+              raise SystemExit("Stats markers not found in README.md")
 
-      - name: Commit updated README
+          # lambda avoids backslash/escape interpretation in the replacement
+          readme.write_text(pattern.sub(lambda _: block, content))
+          PY
+
+      - name: Commit and push
         run: |
+          if git diff --quiet README.md; then
+            echo "No changes."
+            exit 0
+          fi
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git commit -m "chore: update branch language statistics" || exit 0
+          git commit -m "chore: update language stats [skip ci]"
           git push

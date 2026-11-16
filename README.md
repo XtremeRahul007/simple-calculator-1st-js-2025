@@ -7,30 +7,25 @@ The goal is to combine a responsive web interface with a reliable Rust-powered c
 ## Features
 
 ### Mathematical Operations
-- Addition
-- Subtraction
-- Multiplication
-- Division
-- Absolute value
+
+- Addition, subtraction, multiplication, and division
+- Absolute value, reciprocal, and sign
 - Square root, cube root, and nth root
 - Integer and fractional powers
 - Natural and common logarithms
 - Exponential functions
-- Trigonometric functions
-- Inverse trigonometric functions
+- Trigonometric functions and their inverses
 - Hyperbolic functions and their inverses
-- Factorial
-- Permutations and combinations
-- Greatest common divisor (GCD)
-- Least common multiple (LCM)
+- Factorial, permutations, and combinations
+- Greatest common divisor (GCD) and least common multiple (LCM)
 - Modulo
 - Prime checking and factorization
 - Floor, ceiling, rounding, and truncation
-- Reciprocal and sign
 - Minimum and maximum
 - Percentage calculations
 
 ### Numerical Precision
+
 - Arbitrary-precision integers and rational numbers
 - Exact arithmetic where possible
 - Arbitrary-precision decimal floating-point calculations
@@ -39,38 +34,29 @@ The goal is to combine a responsive web interface with a reliable Rust-powered c
 
 ## Technology Stack
 
-### Frontend
-- React
-- TypeScript
-- Tailwind CSS
-- Vite
-
-### Calculation Engine
-- Rust
-- Dashu - arbitrary-precision mathematics
-- WebAssembly
-- wasm-bindgen
-
-### Planned Storage
-- IndexedDB for browser-side persistence
+| Layer | Technology |
+| :--- | :--- |
+| Frontend | React, TypeScript, Tailwind CSS, Vite |
+| Calculation engine | Rust, [Dashu](https://github.com/cmpute/dashu) (arbitrary-precision math) |
+| Bridge | WebAssembly, wasm-bindgen |
+| Storage (planned) | IndexedDB |
 
 ## Architecture
 
 The project follows a separation-of-concerns approach:
 
-- **Frontend:** Handles the user interface and application interactions.
-- **Calculation Engine:** Performs mathematical operations using Rust.
-- **WebAssembly Adapter:** Exposes Rust functionality to the frontend.
-- **Browser Storage:** Handles persistent application data.
+- **Frontend:** handles the user interface and application interactions.
+- **Calculation engine:** performs mathematical operations in Rust.
+- **WebAssembly adapter:** exposes Rust functionality to the frontend.
+- **Browser storage:** handles persistent application data.
 
-The Rust calculation engine is designed to remain independent of browser-specific functionality, allowing it to be tested and potentially reused outside the web application.
+The Rust calculation engine is designed to remain independent of browser-specific functionality, so it can be tested on its own and potentially reused outside the web application.
 
 ## Project Structure
 
 ```text
 .
-├── apps/
-│   └── web/                  # React frontend
+├── web/                      # React frontend
 ├── crates/
 │   ├── calculator-engine/    # Core Rust math engine
 │   └── calculator-wasm/      # WebAssembly adapter
@@ -82,54 +68,46 @@ The Rust calculation engine is designed to remain independent of browser-specifi
 ## Development
 
 ### Prerequisites
-- Node.js
-- npm
+
+- Node.js and npm
 - Rust and Cargo
-- wasm-pack
-- wasm32-unknown-unknown Rust target
+- [wasm-pack](https://rustwasm.github.io/wasm-pack/)
+- The `wasm32-unknown-unknown` Rust target (`rustup target add wasm32-unknown-unknown`)
 
-### Install Dependencies
+### Common Commands
 
-```bash
-npm install
-```
-
-### Run Development Server
-
-```bash
-npm run dev
-```
-
-### Build for Production
-
-```bash
-npm run build
-```
-
-### Run Rust Tests
-
-```bash
-cargo test -p calculator-engine
-```
-
-### Check WebAssembly Compatibility
-
-```bash
-cargo check -p calculator-engine --target wasm32-unknown-unknown
-```
+| Task | Command |
+| :--- | :--- |
+| Install dependencies | `npm install` |
+| Start the dev server | `npm run dev` |
+| Build for production | `npm run build` |
+| Run Rust tests | `cargo test -p calculator-engine` |
+| Check WebAssembly compatibility | `cargo check -p calculator-engine --target wasm32-unknown-unknown` |
 
 ## Project Status
 
-<text>Active development the Rust calculation engine and initial WebAssembly integration are underway. Expression parsing, the complete calculator interface, and browser persistence are planned development milestones.</text>
+**In progress**
+
+- Rust calculation engine
+- Initial WebAssembly integration
+
+**Planned**
+
+- Complete calculator interface
+- Browser persistence with IndexedDB
+
+## Language Breakdown
+
+> This table is generated automatically by a GitHub Actions workflow on every push to the `remastered` branch.
+
+<!-- LANG_STATS_START -->
+<!-- LANG_STATS_END -->
 
 ## Origin
 
 This project started as my first JavaScript calculator, built to perform basic arithmetic operations between two numbers.
 
 The remastered version is an opportunity to revisit that early project with a stronger focus on software architecture, numerical correctness, performance, and maintainability.
-
-<!-- LANG_STATS_START -->
-<!-- LANG_STATS_END -->
 
 ## License
 
