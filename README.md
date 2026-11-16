@@ -128,6 +128,9 @@ This project started as my first JavaScript calculator, built to perform basic a
 
 The remastered version is an opportunity to revisit that early project with a stronger focus on software architecture, numerical correctness, performance, and maintainability.
 
+<!-- LANG_STATS_START -->
+<!-- LANG_STATS_END -->
+
 ## License
 
 MIT

@@ -1,0 +1,63 @@
+name: Update Branch Language Stats
+
+on:
+  push:
+    branches:
+      - remastered
+
+permissions:
+  contents: write
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Install cloc and calculate language stats
+        id: stats
+        run: |
+          sudo apt-get update && sudo apt-get install -y cloc jq
+          cloc . --json --exclude-dir=.git,.github > stats.json
+
+          # Format JSON into a Markdown table with percentages
+          TABLE=$(jq -r '
+            .SUM.code as $total |
+            to_entries |
+            map(select(.key != "header" and .key != "SUM")) |
+            sort_by(-.value.code) |
+            "| Language | Files | Lines of Code | Percentage |\n| :--- | :---: | :---: | :---: |\n" +
+            (map("| \(.key) | \(.value.nFiles) | \(.value.code) | \((.value.code / $total * 10000 | round) / 100)% |") | join("\n"))
+          ' stats.json)
+
+          echo "TABLE<<EOF" >> $GITHUB_OUTPUT
+          echo "$TABLE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Update README.md
+        env:
+          STATS_TABLE: ${{ steps.stats.outputs.TABLE }}
+        run: |
+          python3 -c '
+          import os, re
+          with open("README.md", "r") as f:
+              content = f.read()
+          table = os.environ["STATS_TABLE"]
+          updated = re.sub(
+              r"<!-- LANG_STATS_START -->.*?<!-- LANG_STATS_END -->",
+              f"<!-- LANG_STATS_START -->\n{table}\n<!-- LANG_STATS_END -->",
+              content,
+              flags=re.DOTALL
+          )
+          with open("README.md", "w") as f:
+              f.write(updated)
+          '
+
+      - name: Commit updated README
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "chore: update branch language statistics" || exit 0
+          git push
