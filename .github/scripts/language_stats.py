@@ -225,7 +225,7 @@ def build_readme_block():
 
     return (
         f"{START}\n"
-        f'<p align="center"><img src="{SVG_PATH.as_posix()}" '
+        f'<p align="center"><img src="docs/language-stats.svg" '
         f'alt="Language breakdown" width="{W}"></p>\n'
         f"{END}"
     )
