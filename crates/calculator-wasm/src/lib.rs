@@ -90,7 +90,16 @@ fn into_calculation_response(result: Result<Number, CalculationError>) -> Calcul
     }
 }
 
-fn calculate(
+fn invalid_operation_response() -> CalculationResponse {
+    CalculationResponse::Error {
+        error: CalculationErrorResponse {
+            code: "INVALID_OPERATION".to_string(),
+            message: "The requested operation is not supported".to_string(),
+        },
+    }
+}
+
+fn calculate_with(
     left: &str,
     right: &str,
     operation: impl FnOnce(&Number, &Number, &PrecisionContext) -> Result<Number, CalculationError>,
@@ -110,9 +119,53 @@ fn calculate(
     into_calculation_response(result)
 }
 
+enum Operation {
+    Divide,
+    Multiply,
+}
+
+impl Operation {
+    fn execute(
+        self,
+        left: &Number,
+        right: &Number,
+        precision: &PrecisionContext,
+    ) -> Result<Number, CalculationError> {
+        match self {
+            Self::Divide => divide(left, right, precision),
+            Self::Multiply => multiply(left, right, precision),
+        }
+    }
+}
+
+impl TryFrom<&str> for Operation {
+    type Error = ();
+
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        match value {
+            "divide" => Ok(Self::Divide),
+            "multiply" => Ok(Self::Multiply),
+            _ => Err(()),
+        }
+    }
+}
+
 #[wasm_bindgen]
-pub fn calculate_division(left: &str, right: &str) -> Result<Ts<CalculationResponse>, JsError> {
-    calculate(left, right, divide).into_ts().map_err(Into::into)
+pub fn calculate(
+    left: &str,
+    right: &str,
+    operation: &str,
+) -> Result<Ts<CalculationResponse>, JsError> {
+    let operation = match Operation::try_from(operation) {
+        Ok(operation) => operation,
+        Err(_) => return Ok(invalid_operation_response().into_ts()?),
+    };
+
+    calculate_with(left, right, |left, right, precision| {
+        operation.execute(left, right, precision)
+    })
+    .into_ts()
+    .map_err(Into::into)
 }
 
 #[wasm_bindgen]

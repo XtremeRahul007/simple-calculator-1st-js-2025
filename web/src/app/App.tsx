@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { divide, greetFromRust } from "../lib/wasm/calculator";
+import { greetFromRust, calculateExpression } from "../lib/wasm/calculator";
 
 function App() {
   const [message, setMessage] = useState('');
@@ -25,10 +25,10 @@ function App() {
   }
 
   async function testDivision() {
-    const success = await divide('10', '5');
+    const success = await calculateExpression('10', '5', 'multiply');
     console.log('Success:', success);
 
-    const failure = await divide('10', '0');
+    const failure = await calculateExpression('10', '0', 'divide');
     console.log('Failure:', failure);
 
     if (success.status === 'success') {

@@ -1,4 +1,4 @@
-import init, { greet, inspect_text, calculate_division, type CalculationResponse } from './pkg/calculator_wasm';
+import init, { greet, inspect_text, calculate, type CalculationResponse } from './pkg/calculator_wasm';
 
 let wasmInit: ReturnType<typeof init> | undefined;
 
@@ -22,8 +22,10 @@ export async function greetFromRust(name: string): Promise<{ greet: string; text
   };
 }
 
-export async function divide(left: string, right: string): Promise<CalculationResponse> {
+export type Operation = 'divide' | 'multiply';
+
+export async function calculateExpression(left: string, right: string, operation: Operation): Promise<CalculationResponse> {
   await initializeWasm();
 
-  return calculate_division(left, right);
+  return calculate(left, right, operation);
 }
