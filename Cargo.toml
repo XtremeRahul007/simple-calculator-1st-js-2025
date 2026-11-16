@@ -9,3 +9,6 @@ resolver = "3"
 version = "0.1.0"
 edition = "2024"
 license = "MIT"
+
+[build]
+target = "wasm32-unknown-unknown"

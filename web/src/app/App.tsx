@@ -1,8 +1,9 @@
 import { useState } from "react"
-import { greetFromRust } from "../lib/wasm/calculator";
+import { divide, greetFromRust } from "../lib/wasm/calculator";
 
 function App() {
   const [message, setMessage] = useState('');
+  const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -11,14 +12,32 @@ function App() {
     setError(null);
 
     try {
-      const result = await greetFromRust("World");
-      setMessage(result);
+      const result = await greetFromRust("😀");
+      setMessage(result.greet);
+      setText(result.text);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : 'WASM initialization failed'
       );
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function testDivision() {
+    const success = await divide('10', '5');
+    console.log('Success:', success);
+
+    const failure = await divide('10', '0');
+    console.log('Failure:', failure);
+
+    if (success.status === 'success') {
+      console.log('Result:', success.value);
+    }
+
+    if (failure.status === 'error') {
+      console.log('Error code:', failure.error.code);
+      console.log('Error message:', failure.error.message);
     }
   }
 
@@ -41,7 +60,16 @@ function App() {
         <p className="text-slate-200">{message}</p>
       }
 
+      {<p className="text-slate-200">{text}</p>}
+
       {error && (<p className="text-red-500">{error}</p>)}
+
+      <button
+        onClick={testDivision}
+        className="rounded-lg bg-sky-900 px-5 py-3 text-sky-200 disabled:opacity-50"
+      >
+        Test Rust Division
+      </button>
     </main>
   )
 }

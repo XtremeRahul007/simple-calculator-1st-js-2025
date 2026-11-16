@@ -1,3 +1,5 @@
+use std::fmt;
+
 use dashu::{Decimal, Integer, Rational};
 
 #[derive(Debug, PartialEq)]
@@ -33,5 +35,14 @@ impl Number {
 
     pub fn parse_approximate(input: &str) -> Result<Self, dashu::base::ParseError> {
         Ok(Self::Approximate(input.trim().parse()?))
+    }
+}
+
+impl fmt::Display for Number {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Exact(value) => write!(f, "{value}"),
+            Self::Approximate(value) => write!(f, "{value}"),
+        }
     }
 }
