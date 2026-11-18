@@ -47,6 +47,24 @@ impl Number {
             _ => None,
         }
     }
+
+    pub fn as_usize(&self) -> Option<usize> {
+        match self {
+            Self::Exact(value) if value.denominator() == &1u32.into() => {
+                value.numerator().try_into().ok()
+            }
+            _ => None,
+        }
+    }
+
+    pub fn as_isize(&self) -> Option<isize> {
+        match self {
+            Self::Exact(value) if value.denominator() == &1u32.into() => {
+                value.numerator().try_into().ok()
+            }
+            _ => None,
+        }
+    }
 }
 
 impl fmt::Display for Number {

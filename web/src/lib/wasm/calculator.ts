@@ -2,8 +2,8 @@ import init, {
   greet,
   inspect_text,
   calculate,
-  calculate_unary,
   type CalculationResponse,
+  type Operation,
 } from "./pkg/calculator_wasm";
 
 let wasmInit: ReturnType<typeof init> | undefined;
@@ -30,24 +30,11 @@ export async function greetFromRust(
   };
 }
 
-export type Operation = "add" | "subtract" | "divide" | "multiply";
-
 export async function calculateExpression(
-  left: string,
-  right: string,
+  operands: string[],
   operation: Operation,
 ): Promise<CalculationResponse> {
   await initializeWasm();
 
-  return calculate(left, right, operation);
-}
-
-export type UnaryOperation = "square_root" | "factorial" | "absolute";
-
-export async function calculateUnary(
-  value: string,
-  operation: UnaryOperation,
-): Promise<CalculationResponse> {
-  await initializeWasm();
-  return calculate_unary(value, operation);
+  return calculate(operation, operands);
 }

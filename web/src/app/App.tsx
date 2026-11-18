@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   greetFromRust,
   calculateExpression,
-  calculateUnary,
 } from "../lib/wasm/calculator";
 
 function App() {
@@ -29,10 +28,10 @@ function App() {
   }
 
   async function testDivision() {
-    const success = await calculateUnary("10000", "factorial");
+    const success = await calculateExpression(["16"], "square_root");
     console.log("Success:", success);
 
-    const failure = await calculateUnary("1010101011000", "square_root");
+    const failure = await calculateExpression(["27", "3"], "nth_root");
     console.log("Failure:", failure);
 
     if (success.status === "success") {

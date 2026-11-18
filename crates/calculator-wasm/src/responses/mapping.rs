@@ -84,3 +84,12 @@ pub fn invalid_operation_response() -> CalculationResponse {
         },
     }
 }
+
+pub fn invalid_operand_count_response() -> CalculationResponse {
+    CalculationResponse::Error {
+        error: CalculationErrorResponse {
+            code: "INVALID_OPERAND_COUNT".to_string(),
+            message: "Incorrect number of operands for this operation".to_string(),
+        },
+    }
+}
