@@ -38,6 +38,17 @@ impl Number {
     }
 }
 
+impl Number {
+    pub fn as_u64(&self) -> Option<u64> {
+        match self {
+            Self::Exact(value) if value.denominator() == &1u32.into() => {
+                value.numerator().try_into().ok()
+            }
+            _ => None,
+        }
+    }
+}
+
 impl fmt::Display for Number {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {

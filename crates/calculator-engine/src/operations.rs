@@ -495,7 +495,7 @@ pub fn inverse_hyperbolic_tangent(
     Ok(Number::Approximate(result.value()))
 }
 
-pub fn factorial(n: u32, precision: &PrecisionContext) -> Result<Number, CalculationError> {
+pub fn factorial(n: u64, precision: &PrecisionContext) -> Result<Number, CalculationError> {
     let mut result = Number::from_integer(1);
 
     for factor in 2..=n {
@@ -507,8 +507,8 @@ pub fn factorial(n: u32, precision: &PrecisionContext) -> Result<Number, Calcula
 }
 
 pub fn permutations(
-    n: u32,
-    r: u32,
+    n: u64,
+    r: u64,
     precision: &PrecisionContext,
 ) -> Result<Number, CalculationError> {
     if r > n {
@@ -526,8 +526,8 @@ pub fn permutations(
 }
 
 pub fn combinations(
-    n: u32,
-    r: u32,
+    n: u64,
+    r: u64,
     precision: &PrecisionContext,
 ) -> Result<Number, CalculationError> {
     if r > n {

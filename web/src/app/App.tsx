@@ -1,9 +1,13 @@
-import { useState } from "react"
-import { greetFromRust, calculateExpression } from "../lib/wasm/calculator";
+import { useState } from "react";
+import {
+  greetFromRust,
+  calculateExpression,
+  calculateUnary,
+} from "../lib/wasm/calculator";
 
 function App() {
-  const [message, setMessage] = useState('');
-  const [text, setText] = useState('');
+  const [message, setMessage] = useState("");
+  const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -17,7 +21,7 @@ function App() {
       setText(result.text);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : 'WASM initialization failed'
+        err instanceof Error ? err.message : "WASM initialization failed",
       );
     } finally {
       setLoading(false);
@@ -25,19 +29,19 @@ function App() {
   }
 
   async function testDivision() {
-    const success = await calculateExpression('10', '5', 'multiply');
-    console.log('Success:', success);
+    const success = await calculateUnary("10000", "factorial");
+    console.log("Success:", success);
 
-    const failure = await calculateExpression('10', '0', 'divide');
-    console.log('Failure:', failure);
+    const failure = await calculateUnary("1010101011000", "square_root");
+    console.log("Failure:", failure);
 
-    if (success.status === 'success') {
-      console.log('Result:', success.value);
+    if (success.status === "success") {
+      console.log("Result:", success.value);
     }
 
-    if (failure.status === 'error') {
-      console.log('Error code:', failure.error.code);
-      console.log('Error message:', failure.error.message);
+    if (failure.status === "error") {
+      console.log("Error code:", failure.error.code);
+      console.log("Error message:", failure.error.message);
     }
   }
 
@@ -52,17 +56,18 @@ function App() {
         disabled={loading}
         className="rounded-lg bg-sky-900 px-5 py-3 text-sky-200 disabled:opacity-50"
       >
-        {loading ? 'Loading WASM...' : 'Call Rust'}
+        {loading ? "Loading WASM..." : "Call Rust"}
       </button>
 
-      {message.trim() === '' ?
-        <p className="text-slate-200">Messages will appear here...</p> :
+      {message.trim() === "" ? (
+        <p className="text-slate-200">Messages will appear here...</p>
+      ) : (
         <p className="text-slate-200">{message}</p>
-      }
+      )}
 
       {<p className="text-slate-200">{text}</p>}
 
-      {error && (<p className="text-red-500">{error}</p>)}
+      {error && <p className="text-red-500">{error}</p>}
 
       <button
         onClick={testDivision}
@@ -71,7 +76,7 @@ function App() {
         Test Rust Division
       </button>
     </main>
-  )
+  );
 }
 
-export default App
+export default App;

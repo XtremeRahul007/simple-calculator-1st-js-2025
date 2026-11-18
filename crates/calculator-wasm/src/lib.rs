@@ -1,3 +1,7 @@
+mod tests;
+
+use std::{error::Error, fmt::Display};
+
 use calculator_engine::*;
 use serde::{Deserialize, Serialize};
 use tsify::{Ts, Tsify};
@@ -14,6 +18,24 @@ pub enum CalculationResponse {
 pub struct CalculationErrorResponse {
     pub code: String,
     pub message: String,
+}
+
+#[derive(Debug)]
+struct InvalidOperation(String);
+
+#[derive(Debug)]
+enum BinaryOperation {
+    Add,
+    Subtract,
+    Divide,
+    Multiply,
+}
+
+#[derive(Debug)]
+enum UnaryOperation {
+    SquareRoot,
+    Absolute,
+    Factorial,
 }
 
 fn map_calculation_error(error: CalculationError) -> CalculationErrorResponse {
@@ -119,12 +141,7 @@ fn calculate_with(
     into_calculation_response(result)
 }
 
-enum Operation {
-    Divide,
-    Multiply,
-}
-
-impl Operation {
+impl BinaryOperation {
     fn execute(
         self,
         left: &Number,
@@ -132,23 +149,68 @@ impl Operation {
         precision: &PrecisionContext,
     ) -> Result<Number, CalculationError> {
         match self {
+            Self::Add => add(left, right, precision),
+            Self::Subtract => subtract(left, right, precision),
             Self::Divide => divide(left, right, precision),
             Self::Multiply => multiply(left, right, precision),
         }
     }
 }
 
-impl TryFrom<&str> for Operation {
-    type Error = ();
+impl TryFrom<&str> for BinaryOperation {
+    type Error = InvalidOperation;
 
     fn try_from(value: &str) -> Result<Self, Self::Error> {
         match value {
+            "add" => Ok(Self::Add),
+            "subtract" => Ok(Self::Subtract),
             "divide" => Ok(Self::Divide),
             "multiply" => Ok(Self::Multiply),
-            _ => Err(()),
+            _ => Err(InvalidOperation(value.to_string())),
         }
     }
 }
+
+impl UnaryOperation {
+    fn execute(
+        self,
+        value: &Number,
+        precision: &PrecisionContext,
+    ) -> Result<Number, CalculationError> {
+        match self {
+            Self::SquareRoot => square_root(value, precision),
+            Self::Factorial => {
+                let n = value
+                    .as_u64()
+                    .ok_or(CalculationError::InvalidCombinatoricsInput)?;
+
+                factorial(n, precision)
+            }
+            Self::Absolute => Ok(absolute(value)),
+        }
+    }
+}
+
+impl TryFrom<&str> for UnaryOperation {
+    type Error = InvalidOperation;
+
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        match value {
+            "square_root" => Ok(Self::SquareRoot),
+            "factorial" => Ok(Self::Factorial),
+            "absolute" => Ok(Self::Absolute),
+            _ => Err(InvalidOperation(value.to_string())),
+        }
+    }
+}
+
+impl Display for InvalidOperation {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Unsupported operation: {:?}", self.0)
+    }
+}
+
+impl Error for InvalidOperation {}
 
 #[wasm_bindgen]
 pub fn calculate(
@@ -156,9 +218,12 @@ pub fn calculate(
     right: &str,
     operation: &str,
 ) -> Result<Ts<CalculationResponse>, JsError> {
-    let operation = match Operation::try_from(operation) {
+    let operation = match BinaryOperation::try_from(operation) {
         Ok(operation) => operation,
-        Err(_) => return Ok(invalid_operation_response().into_ts()?),
+        Err(error) => {
+            eprintln!("{error}");
+            return Ok(invalid_operation_response().into_ts()?);
+        }
     };
 
     calculate_with(left, right, |left, right, precision| {
@@ -166,6 +231,25 @@ pub fn calculate(
     })
     .into_ts()
     .map_err(Into::into)
+}
+
+#[wasm_bindgen]
+pub fn calculate_unary(value: &str, operation: &str) -> Result<Ts<CalculationResponse>, JsError> {
+    let operation = match UnaryOperation::try_from(operation) {
+        Ok(operation) => operation,
+        Err(_) => return invalid_operation_response().into_ts().map_err(Into::into),
+    };
+
+    let value = match Number::parse_exact(value) {
+        Ok(value) => value,
+        Err(_) => return invalid_number_response().into_ts().map_err(Into::into),
+    };
+
+    let result = operation.execute(&value, &PrecisionContext::default());
+
+    into_calculation_response(result)
+        .into_ts()
+        .map_err(Into::into)
 }
 
 #[wasm_bindgen]
