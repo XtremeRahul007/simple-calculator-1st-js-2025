@@ -8,4 +8,5 @@ pub mod test;
 pub use constants::*;
 pub use number::*;
 pub use operations::*;
+pub use parser::*;
 pub use precision::*;
