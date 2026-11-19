@@ -3,7 +3,7 @@ name: Update Language Statistics
 on:
   push:
     branches:
-      - main
+      - remastered
     paths-ignore:
       - 'README.md'
 
