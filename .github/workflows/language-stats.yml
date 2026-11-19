@@ -6,7 +6,6 @@ on:
       - main
     paths-ignore:
       - 'README.md'
-      - 'docs/language-stats.svg'
 
   workflow_dispatch:
 
