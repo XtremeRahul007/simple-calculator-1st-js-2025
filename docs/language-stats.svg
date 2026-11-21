@@ -25,7 +25,7 @@
             .track {
                 fill: #30363d;
             }
-        </style><text x="20" y="32" class="title">Language Statistics</text><text x="20" y="52" class="muted">Breakdown by source code</text><text x="460" y="32" text-anchor="end" class="muted">2825 lines</text><defs>
+        </style><text x="20" y="32" class="title">Language Statistics</text><text x="20" y="52" class="muted">Breakdown by source code</text><text x="460" y="32" text-anchor="end" class="muted">1434 lines</text><defs>
             <clipPath id="stacked-bar-clip">
                 <rect
                     x="20"
@@ -38,25 +38,25 @@
         </defs><g clip-path="url(#stacked-bar-clip)"><rect
                     x="20.00"
                     y="85"
-                    width="417.88"
+                    width="396.43"
                     height="12"
                     fill="#dea584"
                 /><rect
-                    x="437.88"
+                    x="416.43"
                     y="85"
-                    width="18.85"
+                    width="37.13"
                     height="12"
                     fill="#3178c6"
                 /><rect
-                    x="456.73"
+                    x="453.56"
                     y="85"
-                    width="2.02"
+                    width="3.99"
                     height="12"
                     fill="#e34c26"
                 /><rect
-                    x="458.75"
+                    x="457.55"
                     y="85"
-                    width="1.25"
+                    width="2.45"
                     height="12"
                     fill="#8b949e"
                 /></g><rect
@@ -93,11 +93,11 @@
             <rect
                 x="145"
                 y="110"
-                width="156.71"
+                width="148.66"
                 height="10"
                 fill="#dea584"
                 clip-path="url(#language-bar-clip-0)"
-            /><text x="325" y="120" class="name">95.0%</text><text x="460" y="120" text-anchor="end" class="muted">2683 lines</text><line
+            /><text x="325" y="120" class="name">90.1%</text><text x="460" y="120" text-anchor="end" class="muted">1292 lines</text><line
                     x1="20"
                     y1="168"
                     x2="460"
@@ -123,11 +123,11 @@
             <rect
                 x="145"
                 y="146"
-                width="7.07"
+                width="13.92"
                 height="10"
                 fill="#3178c6"
                 clip-path="url(#language-bar-clip-1)"
-            /><text x="325" y="156" class="name">4.3%</text><text x="460" y="156" text-anchor="end" class="muted">121 lines</text><line
+            /><text x="325" y="156" class="name">8.4%</text><text x="460" y="156" text-anchor="end" class="muted">121 lines</text><line
                     x1="20"
                     y1="204"
                     x2="460"
@@ -153,11 +153,11 @@
             <rect
                 x="145"
                 y="182"
-                width="0.76"
+                width="1.50"
                 height="10"
                 fill="#e34c26"
                 clip-path="url(#language-bar-clip-2)"
-            /><text x="325" y="192" class="name">0.5%</text><text x="460" y="192" text-anchor="end" class="muted">13 lines</text><circle
+            /><text x="325" y="192" class="name">0.9%</text><text x="460" y="192" text-anchor="end" class="muted">13 lines</text><circle
                 cx="24"
                 cy="224"
                 r="4"
@@ -176,8 +176,8 @@
             <rect
                 x="145"
                 y="218"
-                width="0.47"
+                width="0.92"
                 height="10"
                 fill="#8b949e"
                 clip-path="url(#language-bar-clip-3)"
-            /><text x="325" y="228" class="name">0.3%</text><text x="460" y="228" text-anchor="end" class="muted">8 lines</text></svg>
+            /><text x="325" y="228" class="name">0.6%</text><text x="460" y="228" text-anchor="end" class="muted">8 lines</text></svg>
