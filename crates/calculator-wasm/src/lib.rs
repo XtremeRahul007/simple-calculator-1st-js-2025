@@ -1,12 +1,10 @@
-mod tests;
 mod types;
 
+use crate::types::CalculationResponseTsified;
 use calculator_engine::calculate::calculate;
 
 use tsify::{Ts, Tsify};
 use wasm_bindgen::prelude::*;
-
-use crate::types::CalculationResponseTsified;
 
 #[wasm_bindgen]
 pub fn calculate_expression(

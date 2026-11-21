@@ -32,7 +32,9 @@ impl From<CalculationErrorResponse> for CalculationErrorResponseTsified {
 impl From<CalculationResponse> for CalculationResponseTsified {
     fn from(resp: CalculationResponse) -> Self {
         match resp {
-            CalculationResponse::Success { value } => CalculationResponseTsified::Success { value },
+            CalculationResponse::Success { value } => CalculationResponseTsified::Success {
+                value: value.to_string(),
+            },
             CalculationResponse::Error { error } => CalculationResponseTsified::Error {
                 error: error.into(),
             },

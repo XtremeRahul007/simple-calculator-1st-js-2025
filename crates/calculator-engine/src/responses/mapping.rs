@@ -65,9 +65,7 @@ pub fn invalid_number_response() -> CalculationResponse {
 
 pub fn into_calculation_response(result: Result<Number, CalculationError>) -> CalculationResponse {
     match result {
-        Ok(number) => CalculationResponse::Success {
-            value: number.to_string(),
-        },
+        Ok(number) => CalculationResponse::Success { value: number },
         Err(error) => CalculationResponse::Error {
             error: map_calculation_error(error),
         },

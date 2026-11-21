@@ -38,7 +38,7 @@ jobs:
         run: |
           cargo run --release --manifest-path .github/scripts/Cargo.toml -- \
             --input - \
-            --exclude-dir=node_modules,target,dist,build,.git,.github,.venv,venv,coverage,pkg \
+            --exclude-dir=node_modules,target,dist,build,.git,.github,.venv,venv,coverage,pkg,tests \
             --exclude-lang=JSON,Markdown,TOML,SVG \
             --output docs/language-stats.svg \
             --readme README.md \
