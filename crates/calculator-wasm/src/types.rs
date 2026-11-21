@@ -1,18 +1,43 @@
+use calculator_engine::{CalculationErrorResponse, CalculationResponse};
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 use wasm_bindgen::prelude::*;
 
 #[derive(Debug, Tsify, Serialize, Deserialize)]
 #[serde(tag = "status", rename_all = "lowercase")]
-pub enum CalculationResponse {
-    Success { value: String },
-    Error { error: CalculationErrorResponse },
+pub enum CalculationResponseTsified {
+    Success {
+        value: String,
+    },
+    Error {
+        error: CalculationErrorResponseTsified,
+    },
 }
 
 #[derive(Debug, Tsify, Serialize, Deserialize)]
-pub struct CalculationErrorResponse {
+pub struct CalculationErrorResponseTsified {
     pub code: String,
     pub message: String,
+}
+
+impl From<CalculationErrorResponse> for CalculationErrorResponseTsified {
+    fn from(err: CalculationErrorResponse) -> Self {
+        Self {
+            code: err.code,
+            message: err.message,
+        }
+    }
+}
+
+impl From<CalculationResponse> for CalculationResponseTsified {
+    fn from(resp: CalculationResponse) -> Self {
+        match resp {
+            CalculationResponse::Success { value } => CalculationResponseTsified::Success { value },
+            CalculationResponse::Error { error } => CalculationResponseTsified::Error {
+                error: error.into(),
+            },
+        }
+    }
 }
 
 #[wasm_bindgen]

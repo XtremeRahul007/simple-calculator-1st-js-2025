@@ -1,6 +1,5 @@
 #[cfg(test)]
 mod tests {
-    use crate::parser::*;
     #[test]
     fn tokenizes_basic_expression() {
         let result = tokenize("12 + 3 * 4").unwrap();

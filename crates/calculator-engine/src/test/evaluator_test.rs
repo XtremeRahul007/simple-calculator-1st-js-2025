@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use crate::{CalculationError, Number, PrecisionContext, parser::*};
+    use crate::{CalculationError, Number, PrecisionContext};
 
     fn calculate(input: &str) -> Result<Number, EvaluationError> {
         let tokens = tokenize(input).unwrap();

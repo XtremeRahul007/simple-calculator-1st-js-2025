@@ -1,6 +1,4 @@
-use calculator_engine::{CalculationError, Number};
-
-use crate::responses::types::*;
+use crate::{CalculationError, Number, responses::types::*};
 
 pub fn map_calculation_error(error: CalculationError) -> CalculationErrorResponse {
     let (code, message) = match error {

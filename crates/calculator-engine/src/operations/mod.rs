@@ -1,3 +1,11 @@
+pub mod binary;
+pub mod operations;
+pub mod unary;
+
+pub use binary::*;
+pub use operations::*;
+pub use unary::*;
+
 use std::{error::Error, fmt::Display};
 
 #[derive(Debug)]
