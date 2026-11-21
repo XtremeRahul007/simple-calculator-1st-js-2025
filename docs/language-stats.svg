@@ -25,7 +25,7 @@
             .track {
                 fill: #30363d;
             }
-        </style><text x="20" y="32" class="title">Language Statistics</text><text x="20" y="52" class="muted">Breakdown by source code</text><text x="460" y="32" text-anchor="end" class="muted">2807 lines</text><defs>
+        </style><text x="20" y="32" class="title">Language Statistics</text><text x="20" y="52" class="muted">Breakdown by source code</text><text x="460" y="32" text-anchor="end" class="muted">2825 lines</text><defs>
             <clipPath id="stacked-bar-clip">
                 <rect
                     x="20"
@@ -38,19 +38,19 @@
         </defs><g clip-path="url(#stacked-bar-clip)"><rect
                     x="20.00"
                     y="85"
-                    width="417.74"
+                    width="417.88"
                     height="12"
                     fill="#dea584"
                 /><rect
-                    x="437.74"
+                    x="437.88"
                     y="85"
-                    width="18.97"
+                    width="18.85"
                     height="12"
                     fill="#3178c6"
                 /><rect
-                    x="456.71"
+                    x="456.73"
                     y="85"
-                    width="2.04"
+                    width="2.02"
                     height="12"
                     fill="#e34c26"
                 /><rect
@@ -93,11 +93,11 @@
             <rect
                 x="145"
                 y="110"
-                width="156.65"
+                width="156.71"
                 height="10"
                 fill="#dea584"
                 clip-path="url(#language-bar-clip-0)"
-            /><text x="325" y="120" class="name">94.9%</text><text x="460" y="120" text-anchor="end" class="muted">2665 lines</text><line
+            /><text x="325" y="120" class="name">95.0%</text><text x="460" y="120" text-anchor="end" class="muted">2683 lines</text><line
                     x1="20"
                     y1="168"
                     x2="460"
@@ -123,7 +123,7 @@
             <rect
                 x="145"
                 y="146"
-                width="7.11"
+                width="7.07"
                 height="10"
                 fill="#3178c6"
                 clip-path="url(#language-bar-clip-1)"
