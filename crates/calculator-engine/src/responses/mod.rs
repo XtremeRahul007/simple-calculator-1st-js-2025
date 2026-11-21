@@ -1,5 +1,5 @@
-pub mod mapping;
-pub mod types;
+mod mapping;
+mod types;
 
 pub use mapping::*;
 pub use types::*;

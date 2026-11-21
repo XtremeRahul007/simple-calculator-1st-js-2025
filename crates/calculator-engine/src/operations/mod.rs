@@ -1,6 +1,6 @@
-pub mod binary;
-pub mod operations;
-pub mod unary;
+mod binary;
+mod operations;
+mod unary;
 
 pub use binary::*;
 pub use operations::*;

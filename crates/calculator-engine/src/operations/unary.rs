@@ -59,7 +59,7 @@ impl UnaryOperation {
                 factorial(n, precision)
             }
             Self::Reciprocal => reciprocal(number, precision),
-            Self::Sign => sine(number, precision),
+            Self::Sign => Ok(sign(number)),
             Self::Exponential => exponential(number, precision),
             Self::PowerOfTen => power_of_ten(number, precision),
             Self::NaturalLog => natural_log(number, precision),
@@ -76,9 +76,9 @@ impl UnaryOperation {
             Self::InverseHyperbolicSine => inverse_hyperbolic_sine(number, precision),
             Self::InverseHyperbolicCosine => inverse_hyperbolic_cosine(number, precision),
             Self::InverseHyperbolicTangent => inverse_hyperbolic_tangent(number, precision),
-            Self::Truncate => tangent(number, precision),
+            Self::Truncate => Ok(truncate(number)),
             Self::Round => Ok(round(number)),
-            Self::Ceiling => Ok(round(number)),
+            Self::Ceiling => Ok(ceiling(number)),
             Self::Floor => Ok(floor(number)),
         }
     }

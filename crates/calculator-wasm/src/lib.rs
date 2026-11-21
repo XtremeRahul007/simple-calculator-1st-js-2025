@@ -1,8 +1,8 @@
 mod types;
 
 use crate::types::CalculationResponseTsified;
-use calculator_engine::calculate::calculate;
 
+use calculator_engine::calculate;
 use tsify::{Ts, Tsify};
 use wasm_bindgen::prelude::*;
 
