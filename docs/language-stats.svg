@@ -25,7 +25,7 @@
             .track {
                 fill: #30363d;
             }
-        </style><text x="20" y="32" class="title">Language Statistics</text><text x="20" y="52" class="muted">Breakdown by source code</text><text x="460" y="32" text-anchor="end" class="muted">1775 lines</text><defs>
+        </style><text x="20" y="32" class="title">Language Statistics</text><text x="20" y="52" class="muted">Breakdown by source code</text><text x="460" y="32" text-anchor="end" class="muted">1947 lines</text><defs>
             <clipPath id="stacked-bar-clip">
                 <rect
                     x="20"
@@ -38,25 +38,25 @@
         </defs><g clip-path="url(#stacked-bar-clip)"><rect
                     x="20.00"
                     y="85"
-                    width="404.80"
+                    width="407.91"
                     height="12"
                     fill="#dea584"
                 /><rect
-                    x="424.80"
+                    x="427.91"
                     y="85"
-                    width="29.99"
+                    width="27.34"
                     height="12"
                     fill="#3178c6"
                 /><rect
-                    x="454.79"
+                    x="455.25"
                     y="85"
-                    width="3.22"
+                    width="2.94"
                     height="12"
                     fill="#e34c26"
                 /><rect
-                    x="458.02"
+                    x="458.19"
                     y="85"
-                    width="1.98"
+                    width="1.81"
                     height="12"
                     fill="#8b949e"
                 /></g><rect
@@ -93,11 +93,11 @@
             <rect
                 x="145"
                 y="110"
-                width="151.80"
+                width="152.97"
                 height="10"
                 fill="#dea584"
                 clip-path="url(#language-bar-clip-0)"
-            /><text x="325" y="120" class="name">92.0%</text><text x="460" y="120" text-anchor="end" class="muted">1633 lines</text><line
+            /><text x="325" y="120" class="name">92.7%</text><text x="460" y="120" text-anchor="end" class="muted">1805 lines</text><line
                     x1="20"
                     y1="168"
                     x2="460"
@@ -123,11 +123,11 @@
             <rect
                 x="145"
                 y="146"
-                width="11.25"
+                width="10.25"
                 height="10"
                 fill="#3178c6"
                 clip-path="url(#language-bar-clip-1)"
-            /><text x="325" y="156" class="name">6.8%</text><text x="460" y="156" text-anchor="end" class="muted">121 lines</text><line
+            /><text x="325" y="156" class="name">6.2%</text><text x="460" y="156" text-anchor="end" class="muted">121 lines</text><line
                     x1="20"
                     y1="204"
                     x2="460"
@@ -153,7 +153,7 @@
             <rect
                 x="145"
                 y="182"
-                width="1.21"
+                width="1.10"
                 height="10"
                 fill="#e34c26"
                 clip-path="url(#language-bar-clip-2)"
@@ -176,8 +176,8 @@
             <rect
                 x="145"
                 y="218"
-                width="0.74"
+                width="0.68"
                 height="10"
                 fill="#8b949e"
                 clip-path="url(#language-bar-clip-3)"
-            /><text x="325" y="228" class="name">0.5%</text><text x="460" y="228" text-anchor="end" class="muted">8 lines</text></svg>
+            /><text x="325" y="228" class="name">0.4%</text><text x="460" y="228" text-anchor="end" class="muted">8 lines</text></svg>
