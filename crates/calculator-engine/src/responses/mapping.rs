@@ -1,4 +1,6 @@
-use crate::{CalculationError, Number, responses::types::*};
+use crate::{
+    CalculationError, ExpressionError, Number, parser::InstructionCompileError, responses::types::*,
+};
 
 pub fn map_calculation_error(error: CalculationError) -> CalculationErrorResponse {
     let (code, message) = match error {
@@ -86,6 +88,69 @@ pub fn invalid_operand_count_response() -> CalculationResponse {
         error: CalculationErrorResponse {
             code: "INVALID_OPERAND_COUNT".to_string(),
             message: "Incorrect number of operands for this operation".to_string(),
+        },
+    }
+}
+
+pub fn map_expression_error(error: ExpressionError) -> CalculationErrorResponse {
+    let (code, message) = match error {
+        ExpressionError::Lexer(_) => (
+            "LEXER_ERROR",
+            "Invalid character or number format in expression",
+        ),
+
+        ExpressionError::Parser(_) => (
+            "PARSER_ERROR",
+            "The mathematical expression has invalid syntax",
+        ),
+
+        ExpressionError::Compilation(error) => match error {
+            InstructionCompileError::UnsupportedFunction { .. } => (
+                "UNSUPPORTED_FUNCTION",
+                "The expression contains an unsupported function",
+            ),
+
+            InstructionCompileError::InvalidArgumentCount { .. } => (
+                "INVALID_ARGUMENT_COUNT",
+                "Incorrect number of arguments for this function",
+            ),
+
+            InstructionCompileError::UnsupportedExpression => (
+                "UNSUPPORTED_EXPRESSION",
+                "The expression contains an unsupported construct",
+            ),
+        },
+
+        ExpressionError::Execution(crate::execution::ExecutionError::InvalidNumber) => (
+            "INVALID_NUMBER",
+            "The expression contains an invalid number",
+        ),
+
+        ExpressionError::Execution(crate::execution::ExecutionError::InvalidResultReference {
+            ..
+        }) => (
+            "INVALID_RESULT_REFERENCE",
+            "The expression contains an invalid instruction reference",
+        ),
+
+        ExpressionError::Execution(crate::execution::ExecutionError::Calculation(error)) => {
+            let mapped = map_calculation_error(error);
+            return mapped;
+        }
+    };
+
+    CalculationErrorResponse {
+        code: code.to_string(),
+        message: message.to_string(),
+    }
+}
+
+pub fn into_expression_response(result: Result<Number, ExpressionError>) -> CalculationResponse {
+    match result {
+        Ok(number) => CalculationResponse::Success { value: number },
+
+        Err(error) => CalculationResponse::Error {
+            error: map_expression_error(error),
         },
     }
 }

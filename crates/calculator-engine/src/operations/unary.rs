@@ -1,7 +1,7 @@
 use super::*;
 use crate::{Number, PrecisionContext};
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum UnaryOperation {
     SquareRoot,
     CubeRoot,

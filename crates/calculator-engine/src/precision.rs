@@ -31,7 +31,7 @@ impl PrecisionContext {
 impl Default for PrecisionContext {
     fn default() -> Self {
         Self {
-            significant_digits: 50,
+            significant_digits: 20,
         }
     }
 }

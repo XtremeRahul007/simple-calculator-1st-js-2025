@@ -1,3 +1,5 @@
+mod execution_test;
+mod expression_test;
 mod instructions_test;
 mod lexer_test;
 mod lib_test;

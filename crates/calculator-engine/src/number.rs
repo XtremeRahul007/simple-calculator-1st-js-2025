@@ -1,8 +1,7 @@
+use dashu::{Decimal, Integer, Rational};
 use std::fmt;
 
-use dashu::{Decimal, Integer, Rational};
-
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Number {
     Exact(Rational),
     Approximate(Decimal),
